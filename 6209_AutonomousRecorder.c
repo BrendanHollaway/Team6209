@@ -359,8 +359,9 @@ task pullControl(){
 
 //====================AUTONOMOUS RECORDER=================================
 
-	int encoder[15];
-	int numTurnMoves;
+int encoder[15];
+int numTurnMoves;
+short nParm;
 
 // takes the num of actions, and saves them to arrays
 void autonomous(int numTurnMove)
@@ -374,19 +375,18 @@ void autonomous(int numTurnMove)
 // this lets you press the button when ready to save it to the encoder
 }
 
-short nParm;
-
 task autonomousFile()
 {
+	autonomous(7);
 	TFileHandle   fileHandle;              // will keep track of our file
   TFileIOResult ioResult;                // will store our IO
   string        fileName = "test.txt";   // the name of our file
   int           fileSize = 100;          // will store our file size
-  string				encoderValue = encoder[0];
+  short				encoderValue = encoder[0];
   Delete("test.txt", ioResult);
 	OpenWrite(fileHandle, ioResult, fileName, fileSize);    // open the file for writing (creates the file if it does not exist)
   for ( int i=1; i < 15; i++){
-	  WriteText(fileHandle, ioResult, encoderValue);         // write 'encoderValue' to the file
+	  WriteShort(fileHandle, ioResult, encoderValue);         // write 'encoderValue' to the file
 	  encoderValue = encoder[i];
 	}
 	Close(fileHandle, ioResult);
