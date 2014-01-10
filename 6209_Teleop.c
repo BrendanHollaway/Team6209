@@ -13,7 +13,7 @@
 #pragma config(Motor,  mtr_S2_C1_1,     motorPickUp,   tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S2_C1_2,     motorPullUp,   tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C4_1,    servoStopper,         tServoStandard)
-#pragma config(Servo,  srvo_S1_C4_2,    servo2,               tServoNone)
+#pragma config(Servo,  srvo_S1_C4_2,    doubleLift,           tServoContinuousRotation)
 #pragma config(Servo,  srvo_S1_C4_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_5,    servo5,               tServoNone)
@@ -130,8 +130,6 @@ task armControl(){
 	//Create a variable named powerScaling that is used to scale the power that is distributed to the motors.
 	float powerScaling = 0.85;
 
-
-
 	//Sets the motor Lift to the value of 1, so that we know when it is at the bottom.
 
 	//Continously obtain the joystick settings and set them equal to their respective motor's power.
@@ -203,11 +201,8 @@ task trainingwheels(){
 	//due to erroneous Jostick readings that are greater than -7.
   //int negThreshold = -7;
 
-
 	//Create a variable named powerScaling that is used to scale the power that is distributed to the motors.
 	float powerScaling = 0.85;
-
-
 
 	//Sets the motor Lift to the value of 1, so that we know when it is at the bottom.
 
@@ -266,26 +261,29 @@ task trainingwheels(){
 task chooser(){
 
 	int choose = 0;
-while(true){
-	if(joy2Btn(7) == true){
-		choose = 1;
-		wait10Msec(50);
-}
-	else if(joy2Btn(8) == true){
-		choose = 0;
-		wait10Msec(50);
-}
-	if(choose == 1){
-		StartTask(armControl);
-}
-	else{
-		StartTask(trainingwheels);
-}
+
+	while(true){
+			if(joy2Btn(7) == true){
+				choose = 1;
+				wait10Msec(50);
+		}
+
+			else if(joy2Btn(8) == true){
+				choose = 0;
+				wait10Msec(50);
+		}
+
+			if(choose == 1){
+				StartTask(armControl);
+		}
+
+			else{
+				StartTask(trainingwheels);
+		}
+
+	}
 
 }
-
-}
-
 
 task flagControl(){
 
@@ -336,18 +334,32 @@ task pullControl(){
 
 		getJoystickSettings(joystick);
 
-		//If button 7 is pressed, set pushes the arm up in full power
-		if(joy2Btn(5)==true){
-			motor [motorPullUp] = 100;
-		} //End of if(joy1Btn(7))
+		////If button 7 is pressed, set pushes the arm up in full power
+		//if(joy2Btn(5)==true){
+		//	motor [motorPullUp] = 100;
+		//} //End of if(joy1Btn(7))
 
 		//If button 6 is pressed, set the pulls the arm down in full reverse
-		else if(joy2Btn(6)==true){
+		if(joy2Btn(6)==true){
 			motor [motorPullUp] = -100;
 		} //End of else if(joy1Btn(8))
 
 		else{
 			motor[motorPullUp] = 0;
+		}
+
+		//Open the Double Lift
+		if(joy1Btn(7)==true){
+			servo [doubleLift] = 255;
+		} //End of if(joy1Btn(7))
+
+		//Close the Double Lift
+		else if(joy1Btn(8)==true){
+			servo [doubleLift] = 0;
+		} //End of else if(joy1Btn(8))
+
+		else{
+			servo[doubleLift] = 127;
 		}
 
 	// Add a wait of 7 Milliseconds to the code in order to reduce latency.
