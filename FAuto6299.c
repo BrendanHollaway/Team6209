@@ -104,9 +104,16 @@ void wheelEncoder(int m, float turn, int turnSpeed){
 task main()
 {
 	initializeRobot();
-	//waitForStart();
+	waitForStart();
 
 	bool lift = false;
+	nMotorEncoder[motorManipulatorLift] = 0;
+
+	while ((nMotorEncoder[motorManipulatorLift] < 5200)){
+		motor[motorManipulatorLift] = 100;
+	}
+
+	motor[motorManipulatorLift] = 0;
 	wait10Msec(400);
 	nMotorEncoder[motorFL] = 0;
 
@@ -115,7 +122,7 @@ task main()
 	nMotorEncoder[motorFL] = 0;
 	wheelStop();
 
-	wheelEncoder(682, -.5); // ADJUST THIS
+	wheelEncoder(700, -.5); // ADJUST THIS
 
 	wheelStop();
 
@@ -136,15 +143,6 @@ task main()
 
 	wheelStop();
 	lift = true;
-
-	nMotorEncoder[motorManipulatorLift] = 0;
-
- while ((nMotorEncoder[motorManipulatorLift] < 5200)){
-		motor[motorManipulatorLift] = 100;
-}
-
-	motor[motorManipulatorLift] = 0;
-	wait10Msec(100);
 
 	servo[servoManip] = 0;
 
