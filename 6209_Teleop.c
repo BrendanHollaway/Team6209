@@ -266,25 +266,29 @@ task trainingwheels(){
 task chooser(){
 
 	int choose = 0;
-while(true){
-	if(joy2Btn(7) == true){
-		choose = 1;
-		wait10Msec(50);
-}
-	else if(joy2Btn(8) == true){
-		choose = 0;
-		wait10Msec(50);
-}
-	if(choose == 1){
-		StartTask(armControl);
-}
-	else{
-		StartTask(trainingwheels);
-}
 
-}
+	while(true){
+		if(joy2Btn(7) == true){
+			choose = 1;
+			wait10Msec(50);
+		}
 
-}
+		else if(joy2Btn(8) == true){
+			choose = 0;
+			wait10Msec(50);
+		}
+
+		if(choose == 1){
+			StartTask(armControl);
+		}
+
+		else{
+			StartTask(trainingwheels);
+		}
+
+	 }
+
+ }
 
 
 task flagControl(){
