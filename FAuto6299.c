@@ -141,7 +141,6 @@ task main()
 	}
 
 	motor[motorManipulatorLift] = 0;
-	wait10Msec(400);
 	nMotorEncoder[motorFL] = 0;
 
 	wheelEncoder(1390, 0);
