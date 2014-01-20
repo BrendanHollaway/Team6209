@@ -97,6 +97,33 @@ void wheelEncoder(int m, float turn, int turnSpeed){
 	return;
 }
 
+void wheelEncoder(int m, float turn, int lSpeed, int rSpeed){
+	if(turn == 0){
+		if(m > 0){
+			while(nMotorEncoder[motorFL] < m){
+				setWheels(-lSpeed,-lSpeed,-rSpeed,-rSpeed);
+				}
+			}
+		else{
+			while(nMotorEncoder[motorFL] > m){
+				setWheels(lSpeed,lSpeed,rSpeed,rSpeed);
+				}
+			}
+		} // end of turn==0
+
+	else if(turn == .5){
+		while(nMotorEncoder[motorFL] > -m){
+			setWheels(-lSpeed,-lSpeed,rSpeed,rSpeed);
+			}
+		}
+	else if(turn == -.5){
+		while(nMotorEncoder[motorFL] < m){
+			setWheels(lSpeed,lSpeed,-rSpeed,-rSpeed);
+			}
+		}
+	return;
+}
+
 //==================Task Main=====================================================
 // Move the robot to the basket above the IR beacon
 // and then score into that basket.
@@ -157,22 +184,7 @@ task main()
 	nMotorEncoder[motorFL] = 0;
 	wheelStop();
 
-	wheelEncoder(1850, .5, 100);  //TURN TWO
-
-	nMotorEncoder[motorFL] = 0;
-	wheelStop();
-
-	wheelEncoder(2550, 0, 100);
-
-	nMotorEncoder[motorFL] = 0;
-	wheelStop();
-
-	wheelEncoder(750, -.5, 100);
-
-	nMotorEncoder[motorFL] = 0;
-	wheelStop();
-
-	wheelEncoder(1850, 0, 100); //GOES FORWARD
+	wheelEncoder(1500, .5, 100);  //TURN TWO
 
 	nMotorEncoder[motorFL] = 0;
 	wheelStop();
@@ -184,10 +196,15 @@ task main()
 	motor[motorManipulatorLift] = 0;
 	wait10Msec(50);
 
-	wheelEncoder(1100, -.5, 100); //turn
 	nMotorEncoder[motorFL] = 0;
+	wheelEncoder(3400, 0, 0, 100);
 	wheelStop();
 
+	//nMotorEncoder[motorFL] = 0;
+	//wheelEncoder(3400, 0, 30, 100);
+	//wheelStop();
+
+	nMotorEncoder[motorFL] = 0;
 	wheelEncoder(4700, 0, 100); //GOES FORWARD
 
 	nMotorEncoder[motorFL] = 0;
