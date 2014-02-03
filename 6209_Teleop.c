@@ -13,7 +13,7 @@
 #pragma config(Motor,  mtr_S2_C1_1,     motorPickUp,   tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S2_C1_2,     motorPullUp,   tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C4_1,    servoStopper,         tServoStandard)
-#pragma config(Servo,  srvo_S1_C4_2,    servo2,               tServoNone)
+#pragma config(Servo,  srvo_S1_C4_2,    doubleLift,           tServoContinuousRotation)
 #pragma config(Servo,  srvo_S1_C4_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C4_5,    servo5,               tServoNone)
@@ -216,11 +216,11 @@ task trainingwheels(){
 
 		getJoystickSettings(joystick);
 
-				if(joystick.joy2_y1 > threshold && nMotorEncoder[motorManipulatorLift] < 4800){
+				if(joystick.joy2_y1 > threshold && nMotorEncoder[motorManipulatorLift] < 6000){
 						motor[motorManipulatorLift] = (joystick.joy2_y1);
 				} // End of if(joystick > threshold)
 
-				else if(joystick.joy2_y1 <  -threshold && nMotorEncoder[motorManipulatorLift] > 0){
+				else if(joystick.joy2_y1 <  -threshold && nMotorEncoder[motorManipulatorLift] > 750){
 						motor[motorManipulatorLift] = (joystick.joy2_y1);
 				} // End of else if(joystick < negThreshold)
 
@@ -256,6 +256,18 @@ task trainingwheels(){
 			servo[servoStopper] = 0;
 		}
 
+		if(joy1Btn(7)==true){
+				servo [doubleLift] = 255;
+		} //End of if(joy1Btn(7))
+
+			//Close the Double Lift
+		else if(joy1Btn(8)==true){
+				servo [doubleLift] = 0;
+		} //End of else if(joy1Btn(8))
+
+		else{
+				servo[doubleLift] = 127;
+		}
 		// Add a wait of 10 Milliseconds to the code in order to reduce latency.
 		wait1Msec(10);
 
@@ -280,10 +292,12 @@ task chooser(){
 
 		if(choose == 1){
 			StartTask(armControl);
+			StopTask(trainingwheels);
 		}
 
 		else{
 			StartTask(trainingwheels);
+			StopTask(armControl);
 		}
 
 	 }

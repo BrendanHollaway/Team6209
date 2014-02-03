@@ -36,7 +36,13 @@ void setWheels(int fl, int bl, int fr, int br){
 
 void wheelStop(){
 	setWheels(0,0,0,0);
-	wait10Msec(50);
+	wait10Msec(25);
+	return;
+}
+
+void wheelStop(int t){
+	setWheels(0,0,0,0);
+	wait10Msec(t);
 	return;
 }
 
@@ -104,7 +110,7 @@ void wheelEncoder(int m, float turn, int turnSpeed){
 task main()
 {
 	initializeRobot();
-	waitForStart();
+	//waitForStart();
 
 	bool lift = false;
 	nMotorEncoder[motorManipulatorLift] = 0;
@@ -114,16 +120,17 @@ task main()
 	}
 
 	motor[motorManipulatorLift] = 0;
+	//wait10Msec(400);
 	nMotorEncoder[motorFL] = 0;
 
 	wheelEncoder(1390, 0);
 
 	nMotorEncoder[motorFL] = 0;
-	wheelStop();
+	wheelStop(45);
 
-	wheelEncoder(700, -.5); // ADJUST THIS
+	wheelEncoder(690, -.5); // ADJUST THIS
 
-	wheelStop();
+	wheelStop(45);
 
 	nMotorEncoder[motorFL] = 0;
 
@@ -131,31 +138,40 @@ task main()
 		setWheels(-40,-40,-40,-40);
 	}
 
-	wheelStop();
+	wheelStop(45);
 	int back = 0;
 	if (nMotorEncoder[motorFL] < 1000 && nMotorEncoder[motorFL] > 90)
 		back = nMotorEncoder[motorFL] + 900;
 	else
-		back = nMotorEncoder[motorFL] + 270;
+		back = nMotorEncoder[motorFL] + 370;
 
 	wheelEncoder(back, 0);
 
-	wheelStop();
+	wheelStop(45);
 	lift = true;
 
+	wait10Msec(25);
 	servo[servoManip] = 0;
 
+	wheelStop(45);
 	wait10Msec(50);
+
 	wheelEncoder(0, 0); // go back to first basket
 
 	nMotorEncoder[motorFL] = 0;
 	wheelStop();
 
+
+
 	wheelEncoder(-1050, 0, 100); //Go back
 
 	nMotorEncoder[motorFL] = 0;
 	wheelStop();
-
+	while((nMotorEncoder[motorManipulatorLift] > 110)){
+		motor[motorManipulatorLift] = -100;
+	}
+		motor[motorManipulatorLift] = 0;
+	wait10Msec(50);
 	wheelEncoder(1850, .5, 100);  //TURN TWO
 
 	nMotorEncoder[motorFL] = 0;
@@ -174,23 +190,17 @@ task main()
 	wheelEncoder(1850, 0, 100); //GOES FORWARD
 
 	nMotorEncoder[motorFL] = 0;
-	wheelStop();
+	//wheelStop();
 
-	while((nMotorEncoder[motorManipulatorLift] > 110)){
-		motor[motorManipulatorLift] = -100;
-	}
 
-	motor[motorManipulatorLift] = 0;
-	wait10Msec(50);
-
-	wheelEncoder(1100, -.5, 100); //turn
+	wheelEncoder(1250, -.5, 100); //turn
 	nMotorEncoder[motorFL] = 0;
-	wheelStop();
+	//wheelStop();
 
-	wheelEncoder(4700, 0, 100); //GOES FORWARD
+	wheelEncoder(4800, 0, 100); //GOES FORWARD
 
 	nMotorEncoder[motorFL] = 0;
-	wheelStop();
+	//wheelStop();
 
 	servo[servoManip] = 180;
 	wait10Msec(50);
