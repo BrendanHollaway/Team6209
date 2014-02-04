@@ -110,7 +110,7 @@ void wheelEncoder(int m, float turn, int turnSpeed){
 task main()
 {
 	initializeRobot();
-	//waitForStart();
+	waitForStart();
 
 	bool lift = false;
 	nMotorEncoder[motorManipulatorLift] = 0;
