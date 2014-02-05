@@ -211,7 +211,7 @@ task trainingwheels(){
 
 		getJoystickSettings(joystick);
 
-				if(joystick.joy2_y1 > threshold && nMotorEncoder[motorManipulatorLift] < 4800){
+				if(joystick.joy2_y1 > threshold && nMotorEncoder[motorManipulatorLift] < 5100){
 						motor[motorManipulatorLift] = (joystick.joy2_y1);
 				} // End of if(joystick > threshold)
 
